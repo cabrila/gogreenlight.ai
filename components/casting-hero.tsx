@@ -9,7 +9,7 @@ export function CastingHero() {
     <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden pt-20">
       {/* Background grid */}
       <div className="absolute inset-0 bg-[linear-gradient(rgba(46,149,81,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(46,149,81,0.03)_1px,transparent_1px)] bg-[size:60px_60px]" />
-      
+
       {/* Gradient orb */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-primary/10 rounded-full blur-[120px]" />
 
@@ -18,13 +18,13 @@ export function CastingHero() {
         <div className="mb-8">
           <Logo size="xl" className="mx-auto" />
         </div>
-        
+
         {/* Tagline */}
         <p className="text-2xl sm:text-3xl text-primary mb-8">For creators by creators</p>
 
         {/* Headline */}
         <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
-          <span className="text-foreground">From vision to screen</span>
+          <span className="text-foreground">From vision to screeen</span>
           <br />
           <span className="gradient-text">with less resistance</span>
         </h1>
