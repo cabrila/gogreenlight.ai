@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(yarn add:*)",
+      "Bash(node scripts/generate-pptx.mjs)",
+      "Bash(yarn node:*)"
+    ]
+  }
+}
