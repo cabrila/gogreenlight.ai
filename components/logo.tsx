@@ -1,4 +1,4 @@
-// GoGreenlight Logo Component - uses official brand logo image
+// GoGreenlight Logo Component
 
 import Image from "next/image";
 
