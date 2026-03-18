@@ -294,7 +294,7 @@ export default function PitchDeck() {
           alt="GoGreenlight"
           width={140}
           height={28}
-          className="opacity-80"
+          className="opacity-80 h-auto"
         />
         <div className="text-xs text-muted-foreground">
           {currentSlide + 1} / {slides.length}
