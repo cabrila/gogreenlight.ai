@@ -24,7 +24,7 @@ export function CastingHero() {
 
         {/* Headline */}
         <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
-          <span className="text-foreground">From vision to screeen</span>
+          <span className="text-foreground">From vision to screen</span>
           <br />
           <span className="gradient-text">with less resistance</span>
         </h1>
