@@ -24,7 +24,7 @@ export function Logo({ className = "", size = "md" }: LogoProps) {
       width={width}
       height={height}
       className={className}
-      style={{ width: "auto", height: "auto" }}
+      style={{ width: "auto", height: "auto", maxWidth: width, maxHeight: height }}
       priority
     />
   );
