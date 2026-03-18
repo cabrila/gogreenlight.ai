@@ -139,8 +139,8 @@ export function CastingCTA() {
                   type="submit"
                   disabled={!isFormValid}
                   className={`group w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all ${isFormValid
-                      ? "bg-primary text-primary-foreground hover:bg-primary/90 cursor-pointer"
-                      : "bg-primary/50 text-primary-foreground/50 cursor-not-allowed"
+                    ? "bg-primary text-primary-foreground hover:bg-primary/90 cursor-pointer"
+                    : "bg-primary/50 text-primary-foreground/50 cursor-not-allowed"
                     }`}
                 >
                   SUBMIT REQUEST TO TEST FOR FREE
@@ -150,7 +150,7 @@ export function CastingCTA() {
             )}
 
             <p className="text-sm text-muted-foreground mt-6 text-center">
-              By submitttting you agree to our{" "}
+              By submitting you agree to our{" "}
               <a href="/terms" className="text-primary hover:underline">
                 terms
               </a>{" "}
