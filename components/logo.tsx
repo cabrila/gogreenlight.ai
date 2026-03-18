@@ -7,7 +7,7 @@ interface LogoProps {
   size?: "sm" | "md" | "lg" | "xl";
 }
 
-export function Logo({ className = "", size = "md" }: LogoProps) {
+export function Logo({ className, size = "md" }: LogoProps) {
   const sizeClasses = {
     sm: { width: 120, height: 24 },
     md: { width: 160, height: 32 },
