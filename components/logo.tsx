@@ -23,7 +23,7 @@ export function Logo({ className = "", size = "md" }: LogoProps) {
       alt="GoGreenlight"
       width={width}
       height={height}
-      className={className}
+      className={`h-auto ${className}`}
       priority
     />
   );
