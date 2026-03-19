@@ -8,13 +8,11 @@ export function CastingCTA() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
-    email: "",
     profession: "",
     useCase: "",
   });
 
   const isFormValid = formData.name.trim() !== "" && 
-                      formData.email.trim() !== "" && 
                       formData.profession.trim() !== "" && 
                       formData.useCase.trim() !== "";
 
@@ -25,15 +23,15 @@ export function CastingCTA() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const email = formData.get("email");
-    const profession = formData.get("profession");
-    const useCase = formData.get("useCase");
+    const formDataObj = new FormData(e.currentTarget);
+    const name = formDataObj.get("name");
+    const profession = formDataObj.get("profession");
+    const useCase = formDataObj.get("useCase");
     
     // Create mailto link with pre-filled data
     const subject = encodeURIComponent("GoGreenlight Beta Access Request");
     const body = encodeURIComponent(
-      `Hi GoGreenlight Team,\n\nI would like to request access to the GoGreenlight Casting Beta.\n\nProfession: ${profession}\n\nHow I plan to use GoGreenlight:\n${useCase}\n\nPlease send the access link to this email.\n\nBest regards`
+      `Hi GoGreenlight Team,\n\nI would like to request access to the GoGreenlight Casting Beta.\n\nName: ${name}\nProfession: ${profession}\n\nHow I plan to use GoGreenlight:\n${useCase}\n\nPlease send the access link to this email.\n\nBest regards`
     );
     
     window.location.href = `mailto:contact@gogreenlight.ai?subject=${subject}&body=${body}`;
@@ -81,22 +79,6 @@ export function CastingCTA() {
                     name="name"
                     placeholder="Your full name"
                     value={formData.name}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">
-                    Your email
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    placeholder="you@company.com"
-                    value={formData.email}
                     onChange={handleInputChange}
                     className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                     required
