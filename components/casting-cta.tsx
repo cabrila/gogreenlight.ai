@@ -8,15 +8,13 @@ export function CastingCTA() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
-    email: "",
     profession: "",
     useCase: "",
   });
 
-  const isFormValid = formData.name.trim() !== "" &&
-    formData.email.trim() !== "" &&
-    formData.profession.trim() !== "" &&
-    formData.useCase.trim() !== "";
+  const isFormValid = formData.name.trim() !== "" && 
+                      formData.profession.trim() !== "" && 
+                      formData.useCase.trim() !== "";
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -25,17 +23,17 @@ export function CastingCTA() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const email = formData.get("email");
-    const profession = formData.get("profession");
-    const useCase = formData.get("useCase");
-
+    const formDataObj = new FormData(e.currentTarget);
+    const name = formDataObj.get("name");
+    const profession = formDataObj.get("profession");
+    const useCase = formDataObj.get("useCase");
+    
     // Create mailto link with pre-filled data
     const subject = encodeURIComponent("GoGreenlight Beta Access Request");
     const body = encodeURIComponent(
-      `Hi GoGreenlight Team,\n\nI would like to request access to the GoGreenlight Casting Beta.\n\nProfession: ${profession}\n\nHow I plan to use GoGreenlight:\n${useCase}\n\nPlease send the access link to this email.\n\nBest regards`
+      `Hi GoGreenlight Team,\n\nI would like to request access to the GoGreenlight Casting Beta.\n\nName: ${name}\nProfession: ${profession}\n\nHow I plan to use GoGreenlight:\n${useCase}\n\nPlease send the access link to this email.\n\nBest regards`
     );
-
+    
     window.location.href = `mailto:contact@gogreenlight.ai?subject=${subject}&body=${body}`;
     setIsSubmitted(true);
   };
@@ -46,7 +44,7 @@ export function CastingCTA() {
         <div className="relative rounded-3xl border border-border bg-card p-6 lg:p-10 overflow-hidden">
           {/* Background gradient */}
           <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/10" />
-
+          
           <div className="relative z-10">
             <div className="text-center mb-6">
               <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-4">
@@ -88,22 +86,6 @@ export function CastingCTA() {
                 </div>
 
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">
-                    Your email
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    placeholder="you@company.com"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                    required
-                  />
-                </div>
-
-                <div>
                   <label htmlFor="profession" className="block text-sm font-medium text-foreground mb-2">
                     Your role
                   </label>
@@ -138,10 +120,11 @@ export function CastingCTA() {
                 <button
                   type="submit"
                   disabled={!isFormValid}
-                  className={`group w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all ${isFormValid
-                    ? "bg-primary text-primary-foreground hover:bg-primary/90 cursor-pointer"
-                    : "bg-primary/50 text-primary-foreground/50 cursor-not-allowed"
-                    }`}
+                  className={`group w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all ${
+                    isFormValid 
+                      ? "bg-primary text-primary-foreground hover:bg-primary/90 cursor-pointer" 
+                      : "bg-primary/50 text-primary-foreground/50 cursor-not-allowed"
+                  }`}
                 >
                   SUBMIT REQUEST TO TEST FOR FREE
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
