@@ -3,7 +3,7 @@ import Link from "next/link";
 import { LegalLayout } from "@/components/legal-layout";
 
 export const metadata: Metadata = {
-  title: "DP A Appendix B - Sub-Processor List | GoGreenlight",
+  title: "DPA Appendix B - Sub-Processor List | GoGreenlight",
   description: "GoGreenlight authorized sub-processors list for data processing agreement compliance.",
 };
 
