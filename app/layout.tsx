@@ -31,9 +31,6 @@ export const metadata: Metadata = {
       "Building the AI-native infrastructure for the future of creation. The deterministic Code-to-AI engine for the media industry.",
     type: "website",
   },
-  icons: {
-    icon: "/images/favicon.ico",
-  },
 };
 
 export const viewport: Viewport = {

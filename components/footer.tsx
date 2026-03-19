@@ -95,7 +95,14 @@ export function Footer() {
             <p className="mt-1">Nordtoft 30, 9000 Aalborg, Denmark · CVR: 45992705</p>
           </div>
           <p className="text-sm text-muted-foreground">
-            Made with love in Denmark
+            Made with love{" "}
+            <a 
+              href="/secret" 
+              className="hover:text-primary transition-colors cursor-pointer"
+            >
+              in
+            </a>
+            {" "}Denmark
           </p>
         </div>
       </div>
