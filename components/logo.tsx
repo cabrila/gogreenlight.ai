@@ -1,4 +1,4 @@
-// GoGreenlight Logo Component - uses official brand logo image
+// GoGreenlight Logo Component
 
 import Image from "next/image";
 
@@ -7,7 +7,7 @@ interface LogoProps {
   size?: "sm" | "md" | "lg" | "xl";
 }
 
-export function Logo({ className = "", size = "md" }: LogoProps) {
+export function Logo({ className, size = "md" }: LogoProps) {
   const sizeClasses = {
     sm: { width: 120, height: 24 },
     md: { width: 160, height: 32 },
@@ -23,7 +23,8 @@ export function Logo({ className = "", size = "md" }: LogoProps) {
       alt="GoGreenlight"
       width={width}
       height={height}
-      className={className}
+      className={className || undefined}
+      style={{ height: "auto" }}
       priority
     />
   );
