@@ -3,7 +3,7 @@ import Link from "next/link";
 import { LegalLayout } from "@/components/legal-layout";
 
 export const metadata: Metadata = {
-  title: "DPA Appendix B - Sub-Processor List | GoGreenlight",
+  title: "DP A Appendix B - Sub-Processor List | GoGreenlight",
   description: "GoGreenlight authorized sub-processors list for data processing agreement compliance.",
 };
 
@@ -38,7 +38,7 @@ export default function DPAAppendixBPage() {
           <p className="text-muted-foreground leading-relaxed mb-6">
             On commencement of the Clauses, the data controller authorizes the engagement of the following sub-processors for the processing described for that party. The data processor shall not be entitled – without the data controller&apos;s general written authorization – to engage a sub-processor for a &apos;different&apos; processing than the one which has been agreed upon or have another sub-processor perform the described processing.
           </p>
-          
+
           <div className="overflow-x-auto">
             <table className="w-full border border-border rounded-lg">
               <thead>
