@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Gabarito, Inter } from "next/font/google";
 import "./globals.css";
+import { FullscreenHandler } from "@/components/fullscreen-handler";
 
 const gabarito = Gabarito({
   subsets: ["latin"],
@@ -49,6 +50,7 @@ export default function RootLayout({
       <body
         className={`${gabarito.variable} ${inter.variable} font-sans antialiased`}
       >
+        <FullscreenHandler />
         {children}
       </body>
     </html>
