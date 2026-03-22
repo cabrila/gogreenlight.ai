@@ -105,8 +105,8 @@ export function CastingPricing() {
           />
         )}
 
-        {/* Semi-transparent overlay */}
-        <div className="absolute inset-0 bg-black/80" aria-hidden="true" />
+        {/* Semi-transparent overlay — lighter for more carousel visibility */}
+        <div className="absolute inset-0 bg-black/50" aria-hidden="true" />
 
         {/* Top gradient fade from previous section */}
         <div
