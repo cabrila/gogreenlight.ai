@@ -135,8 +135,8 @@ export function CastingPricing() {
           }}
         />
 
-        {/* Overlay — 80% opaque (20% transparent) for strong readability */}
-        <div className="absolute inset-0 bg-black/80" style={{ zIndex: 3 }} />
+        {/* Overlay — 90% opaque (10% transparent) */}
+        <div className="absolute inset-0 bg-black/90" style={{ zIndex: 3 }} />
 
         {/* Top fade from previous section */}
         <div
