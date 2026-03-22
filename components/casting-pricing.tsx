@@ -2,7 +2,7 @@
 
 import { Check, ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 // actors.png is first in the sequence
 const CAROUSEL_IMAGES = [
@@ -20,8 +20,8 @@ const CAROUSEL_IMAGES = [
   },
 ];
 
-const FADE_DURATION = 900;   // ms — cross-fade between slides
-const DISPLAY_TIME  = 5000;  // ms — how long each slide is fully visible
+const FADE_DURATION = 900;  // ms — cross-fade between slides
+const DISPLAY_TIME  = 5000; // ms — how long each slide is fully visible
 
 const includedFeatures = [
   "Unlimited projects",
@@ -33,61 +33,66 @@ const includedFeatures = [
 ];
 
 export function CastingPricing() {
-  // Index of the slide currently on top (fully visible)
+  // `active` = the visible slide index; `prev` = the slide fading out
   const [active, setActive] = useState(0);
-  // Index of the slide fading in; null when not mid-transition
-  const [incoming, setIncoming] = useState<number | null>(null);
-  // Whether the cross-fade is running
-  const [fading, setFading] = useState(false);
+  const [prev, setPrev] = useState<number | null>(null);
+  const [transitioning, setTransitioning] = useState(false);
 
-  // Stable ref so interval callback always sees latest active index
-  const activeRef = useRef(active);
-  activeRef.current = active;
+  const activeRef = useRef(0);
+  const transitioningRef = useRef(false);
+  const finishRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  const fadingRef = useRef(fading);
-  fadingRef.current = fading;
+  // Kick off a cross-fade to `target`
+  const transitionTo = useCallback((target: number) => {
+    if (transitioningRef.current || target === activeRef.current) return;
 
-  const pendingRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const from = activeRef.current;
+    transitioningRef.current = true;
+    activeRef.current = target;
 
-  // Core transition — moves to a target index
-  const transitionTo = (target: number) => {
-    if (fadingRef.current || target === activeRef.current) return;
+    // 1. Mount both slides — outgoing at full opacity, incoming at 0
+    setPrev(from);
+    setActive(target);
+    setTransitioning(false); // incoming opacity = 0
 
-    // Clear any pending finish-transition timer
-    if (pendingRef.current) clearTimeout(pendingRef.current);
+    // 2. After one paint, flip transitioning → true so CSS kicks in
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        setTransitioning(true); // incoming fades to 1, outgoing fades to 0
+      });
+    });
 
-    setIncoming(target);
-    setFading(true);
+    // 3. Clean up after fade completes
+    if (finishRef.current) clearTimeout(finishRef.current);
+    finishRef.current = setTimeout(() => {
+      setPrev(null);
+      setTransitioning(false);
+      transitioningRef.current = false;
+    }, FADE_DURATION + 50);
+  }, []);
 
-    pendingRef.current = setTimeout(() => {
-      setActive(target);
-      setIncoming(null);
-      setFading(false);
-    }, FADE_DURATION);
-  };
-
-  // Auto-advance every DISPLAY_TIME ms — simple interval, no deps that change
+  // Auto-advance
   useEffect(() => {
-    const id = setInterval(() => {
+    intervalRef.current = setInterval(() => {
       const next = (activeRef.current + 1) % CAROUSEL_IMAGES.length;
       transitionTo(next);
     }, DISPLAY_TIME);
 
     return () => {
-      clearInterval(id);
-      if (pendingRef.current) clearTimeout(pendingRef.current);
+      if (intervalRef.current) clearInterval(intervalRef.current);
+      if (finishRef.current) clearTimeout(finishRef.current);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [transitionTo]);
 
   const goPrev = () => {
-    const prev = (activeRef.current - 1 + CAROUSEL_IMAGES.length) % CAROUSEL_IMAGES.length;
-    transitionTo(prev);
+    const target = (activeRef.current - 1 + CAROUSEL_IMAGES.length) % CAROUSEL_IMAGES.length;
+    transitionTo(target);
   };
 
   const goNext = () => {
-    const next = (activeRef.current + 1) % CAROUSEL_IMAGES.length;
-    transitionTo(next);
+    const target = (activeRef.current + 1) % CAROUSEL_IMAGES.length;
+    transitionTo(target);
   };
 
   return (
@@ -95,50 +100,43 @@ export function CastingPricing() {
 
       {/* ── Carousel background ── */}
       <div className="absolute inset-0" aria-hidden="true">
-
         {/*
-          Each image sits in its own absolutely-positioned layer.
-          - The active slide is always opacity-1 at z-index 1.
-          - The incoming slide fades from 0 → 1 at z-index 2,
-            so it cross-dissolves over the current one.
-          - All other slides are opacity-0 at z-index 0.
+          Layering strategy:
+          - `prev` slide: z-index 1, fades from opacity-1 → opacity-0 during transition
+          - `active` slide: z-index 2, fades from opacity-0 → opacity-1 during transition
+          - When no transition: only `active` is rendered at opacity-1
         */}
-        {CAROUSEL_IMAGES.map((image, i) => {
-          const isActive   = i === active;
-          const isIncoming = i === incoming;
 
-          let opacity = 0;
-          let zIndex  = 0;
+        {/* Outgoing slide */}
+        {prev !== null && (
+          <div
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{
+              backgroundImage: `url('${CAROUSEL_IMAGES[prev].src}')`,
+              opacity: transitioning ? 0 : 1,
+              zIndex: 1,
+              transition: `opacity ${FADE_DURATION}ms cubic-bezier(0.4, 0, 0.2, 1)`,
+              willChange: "opacity",
+            }}
+          />
+        )}
 
-          if (isActive) {
-            opacity = 1;
-            zIndex  = 1;
-          }
-          if (isIncoming) {
-            // Incoming starts at 0 then immediately transitions to 1 via CSS
-            opacity = fading ? 1 : 0;
-            zIndex  = 2;
-          }
+        {/* Active (incoming) slide */}
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: `url('${CAROUSEL_IMAGES[active].src}')`,
+            opacity: prev !== null ? (transitioning ? 1 : 0) : 1,
+            zIndex: 2,
+            transition: prev !== null
+              ? `opacity ${FADE_DURATION}ms cubic-bezier(0.4, 0, 0.2, 1)`
+              : "none",
+            willChange: "opacity",
+          }}
+        />
 
-          return (
-            <div
-              key={image.src}
-              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-              style={{
-                backgroundImage: `url('${image.src}')`,
-                opacity,
-                zIndex,
-                transition: isIncoming
-                  ? `opacity ${FADE_DURATION}ms cubic-bezier(0.4, 0, 0.2, 1)`
-                  : "none",
-                willChange: "opacity",
-              }}
-            />
-          );
-        })}
-
-        {/* Semi-transparent overlay — darkened for readability */}
-        <div className="absolute inset-0 bg-black/72" style={{ zIndex: 3 }} />
+        {/* Overlay — 80% opaque (20% transparent) for strong readability */}
+        <div className="absolute inset-0 bg-black/80" style={{ zIndex: 3 }} />
 
         {/* Top fade from previous section */}
         <div
