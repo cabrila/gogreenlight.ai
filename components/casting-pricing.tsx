@@ -7,16 +7,16 @@ import { useCallback, useEffect, useRef, useState } from "react";
 // actors.png is first in the sequence
 const CAROUSEL_IMAGES = [
   {
-    src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/actors-3Arf8B8D6hRmTsVWrdHGTz8Ur4jOvs.png",
-    alt: "Actor casting list interface",
+    src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/actors-G3VdSkPQEkEVVcE8bIaqg0Jrdttkwc.png",
+    alt: "Actor long-list with candidate cards and voting",
   },
   {
-    src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/characters-9ppApL91uHyTYwzH2wkXejRmcAqDBw.png",
-    alt: "Characters management view",
+    src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/characters-TNZnGN8bhyHlcpuVW1QWAfJAx9wFtK.png",
+    alt: "Characters management grid with actor collages",
   },
   {
-    src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/playerview-lwzWbfAS6JBqLNz3nbO8sxNApVmn6b.png",
-    alt: "Actor profile player view",
+    src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/actorscreen-DDQmgm6UaNf3bX6VW7xptdantBV360.png",
+    alt: "Actor detail panel with media library and team votes",
   },
 ];
 
