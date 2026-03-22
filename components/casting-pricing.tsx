@@ -2,9 +2,9 @@
 
 import { Check, ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
-// Actors.png is first in the sequence as requested
+// actors.png is first in the sequence
 const CAROUSEL_IMAGES = [
   {
     src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/actors-3Arf8B8D6hRmTsVWrdHGTz8Ur4jOvs.png",
@@ -20,9 +20,8 @@ const CAROUSEL_IMAGES = [
   },
 ];
 
-// Configurable timing (in milliseconds)
-const TRANSITION_DURATION = 1200; // Duration of fade transition
-const SLIDE_DISPLAY_TIME = 5000; // Time each slide is displayed before auto-advance
+const FADE_DURATION = 900;   // ms — cross-fade between slides
+const DISPLAY_TIME  = 5000;  // ms — how long each slide is fully visible
 
 const includedFeatures = [
   "Unlimited projects",
@@ -34,85 +33,92 @@ const includedFeatures = [
 ];
 
 export function CastingPricing() {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [nextIndex, setNextIndex] = useState<number | null>(null);
-  const [isTransitioning, setIsTransitioning] = useState(false);
-  const autoPlayRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const transitionRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // Index of the slide currently on top (fully visible)
+  const [active, setActive] = useState(0);
+  // Index of the slide fading in; null when not mid-transition
+  const [incoming, setIncoming] = useState<number | null>(null);
+  // Whether the cross-fade is running
+  const [fading, setFading] = useState(false);
 
-  // Clear all timers
-  const clearTimers = useCallback(() => {
-    if (autoPlayRef.current) {
-      clearInterval(autoPlayRef.current);
-      autoPlayRef.current = null;
-    }
-    if (transitionRef.current) {
-      clearTimeout(transitionRef.current);
-      transitionRef.current = null;
-    }
+  // Stable ref so interval callback always sees latest active index
+  const activeRef = useRef(active);
+  activeRef.current = active;
+
+  const fadingRef = useRef(fading);
+  fadingRef.current = fading;
+
+  const pendingRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Core transition — moves to a target index
+  const transitionTo = (target: number) => {
+    if (fadingRef.current || target === activeRef.current) return;
+
+    // Clear any pending finish-transition timer
+    if (pendingRef.current) clearTimeout(pendingRef.current);
+
+    setIncoming(target);
+    setFading(true);
+
+    pendingRef.current = setTimeout(() => {
+      setActive(target);
+      setIncoming(null);
+      setFading(false);
+    }, FADE_DURATION);
+  };
+
+  // Auto-advance every DISPLAY_TIME ms — simple interval, no deps that change
+  useEffect(() => {
+    const id = setInterval(() => {
+      const next = (activeRef.current + 1) % CAROUSEL_IMAGES.length;
+      transitionTo(next);
+    }, DISPLAY_TIME);
+
+    return () => {
+      clearInterval(id);
+      if (pendingRef.current) clearTimeout(pendingRef.current);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Navigate to a specific slide
-  const goToSlide = useCallback(
-    (index: number) => {
-      if (isTransitioning || index === currentIndex) return;
+  const goPrev = () => {
+    const prev = (activeRef.current - 1 + CAROUSEL_IMAGES.length) % CAROUSEL_IMAGES.length;
+    transitionTo(prev);
+  };
 
-      // Set up the transition
-      setNextIndex(index);
-      setIsTransitioning(true);
-
-      // After transition completes, update the current index
-      transitionRef.current = setTimeout(() => {
-        setCurrentIndex(index);
-        setNextIndex(null);
-        setIsTransitioning(false);
-      }, TRANSITION_DURATION);
-    },
-    [isTransitioning, currentIndex]
-  );
-
-  // Navigate to next slide
-  const nextSlide = useCallback(() => {
-    const next = (currentIndex + 1) % CAROUSEL_IMAGES.length;
-    goToSlide(next);
-  }, [currentIndex, goToSlide]);
-
-  // Navigate to previous slide
-  const prevSlide = useCallback(() => {
-    const prev =
-      (currentIndex - 1 + CAROUSEL_IMAGES.length) % CAROUSEL_IMAGES.length;
-    goToSlide(prev);
-  }, [currentIndex, goToSlide]);
-
-  // Auto-play effect
-  useEffect(() => {
-    // Start auto-play interval
-    autoPlayRef.current = setInterval(() => {
-      const next = (currentIndex + 1) % CAROUSEL_IMAGES.length;
-      if (!isTransitioning) {
-        setNextIndex(next);
-        setIsTransitioning(true);
-
-        transitionRef.current = setTimeout(() => {
-          setCurrentIndex(next);
-          setNextIndex(null);
-          setIsTransitioning(false);
-        }, TRANSITION_DURATION);
-      }
-    }, SLIDE_DISPLAY_TIME);
-
-    return () => clearTimers();
-  }, [currentIndex, isTransitioning, clearTimers]);
+  const goNext = () => {
+    const next = (activeRef.current + 1) % CAROUSEL_IMAGES.length;
+    transitionTo(next);
+  };
 
   return (
     <section id="pricing" className="relative py-24 lg:py-32 overflow-hidden">
+
       {/* ── Carousel background ── */}
-      <div className="absolute inset-0">
-        {/* All slides rendered with opacity transitions */}
-        {CAROUSEL_IMAGES.map((image, index) => {
-          const isCurrent = index === currentIndex;
-          const isNext = index === nextIndex;
-          const isVisible = isCurrent || isNext;
+      <div className="absolute inset-0" aria-hidden="true">
+
+        {/*
+          Each image sits in its own absolutely-positioned layer.
+          - The active slide is always opacity-1 at z-index 1.
+          - The incoming slide fades from 0 → 1 at z-index 2,
+            so it cross-dissolves over the current one.
+          - All other slides are opacity-0 at z-index 0.
+        */}
+        {CAROUSEL_IMAGES.map((image, i) => {
+          const isActive   = i === active;
+          const isIncoming = i === incoming;
+
+          let opacity = 0;
+          let zIndex  = 0;
+
+          if (isActive) {
+            opacity = 1;
+            zIndex  = 1;
+          }
+          if (isIncoming) {
+            // Incoming starts at 0 then immediately transitions to 1 via CSS
+            opacity = fading ? 1 : 0;
+            zIndex  = 2;
+          }
 
           return (
             <div
@@ -120,138 +126,125 @@ export function CastingPricing() {
               className="absolute inset-0 bg-cover bg-center bg-no-repeat"
               style={{
                 backgroundImage: `url('${image.src}')`,
-                opacity: isNext ? 1 : isCurrent && isTransitioning ? 0 : isCurrent ? 1 : 0,
-                transform: isVisible ? "scale(1.02)" : "scale(1)",
-                transition: `opacity ${TRANSITION_DURATION}ms ease-in-out, transform ${TRANSITION_DURATION * 2}ms ease-out`,
-                zIndex: isNext ? 2 : isCurrent ? 1 : 0,
-                willChange: "opacity, transform",
+                opacity,
+                zIndex,
+                transition: isIncoming
+                  ? `opacity ${FADE_DURATION}ms cubic-bezier(0.4, 0, 0.2, 1)`
+                  : "none",
+                willChange: "opacity",
               }}
-              aria-hidden={!isCurrent}
             />
           );
         })}
 
-        {/* Semi-transparent overlay */}
-        <div className="absolute inset-0 bg-black/50 z-10" aria-hidden="true" />
+        {/* Semi-transparent overlay — darkened for readability */}
+        <div className="absolute inset-0 bg-black/72" style={{ zIndex: 3 }} />
 
-        {/* Top gradient fade from previous section */}
+        {/* Top fade from previous section */}
         <div
-          className="absolute inset-x-0 top-0 h-32 pointer-events-none z-10"
+          className="absolute inset-x-0 top-0 h-32 pointer-events-none"
           style={{
             background: "linear-gradient(to top, transparent, hsl(0 0% 4%))",
+            zIndex: 4,
           }}
-          aria-hidden="true"
         />
 
-        {/* Bottom gradient fade to next section */}
+        {/* Bottom fade to next section */}
         <div
-          className="absolute inset-x-0 bottom-0 h-32 pointer-events-none z-10"
+          className="absolute inset-x-0 bottom-0 h-32 pointer-events-none"
           style={{
             background: "linear-gradient(to bottom, transparent, hsl(0 0% 4%))",
+            zIndex: 4,
           }}
-          aria-hidden="true"
         />
       </div>
 
-      {/* ── Navigation arrows ── */}
+      {/* ── Previous / Next navigation arrows ── */}
       <button
-        onClick={prevSlide}
-        disabled={isTransitioning}
-        className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full bg-black/40 hover:bg-black/60 text-white/80 hover:text-white transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
+        onClick={goPrev}
+        className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full bg-black/50 hover:bg-black/70 text-white transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
         aria-label="Previous slide"
       >
         <ChevronLeft className="w-6 h-6" />
       </button>
       <button
-        onClick={nextSlide}
-        disabled={isTransitioning}
-        className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full bg-black/40 hover:bg-black/60 text-white/80 hover:text-white transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
+        onClick={goNext}
+        className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full bg-black/50 hover:bg-black/70 text-white transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
         aria-label="Next slide"
       >
         <ChevronRight className="w-6 h-6" />
       </button>
 
       {/* ── Content ── */}
-      <div className="relative z-20 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8" style={{ zIndex: 10 }}>
+
         {/* Header */}
         <div className="text-center mb-16">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-6">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-6 text-balance">
             Test GoGreenlight's Casting Platform
           </h2>
         </div>
 
         {/* Pricing card */}
-        <div className="relative rounded-3xl border border-primary/30 bg-card/90 backdrop-blur-sm p-8 lg:p-12 glow">
-          {/* Features */}
-          <div>
-            <p className="text-sm font-medium text-muted-foreground uppercase tracking-wider mb-6">
-              Everything included
-            </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {includedFeatures.map((feature, index) => (
-                <div key={index} className="flex items-center gap-3">
-                  <div className="flex-shrink-0 w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center">
-                    <Check className="w-3 h-3 text-primary" />
-                  </div>
-                  <span className="text-foreground">{feature}</span>
+        <div className="rounded-3xl border border-primary/30 bg-card/90 backdrop-blur-sm p-8 lg:p-12 glow">
+
+          {/* Features grid */}
+          <p className="text-sm font-medium text-muted-foreground uppercase tracking-wider mb-6">
+            Everything included
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+            {includedFeatures.map((feature) => (
+              <div key={feature} className="flex items-center gap-3">
+                <div className="flex-shrink-0 w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center">
+                  <Check className="w-3 h-3 text-primary" />
                 </div>
-              ))}
-            </div>
+                <span className="text-foreground">{feature}</span>
+              </div>
+            ))}
           </div>
 
           {/* Divider */}
-          <div className="border-t border-border my-8" />
+          <div className="border-t border-border mb-8" />
 
           {/* CTA */}
-          <div className="flex justify-center">
-            <div className="text-center">
-              <Link
-                href="#signup"
-                className="group inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-all text-lg"
-              >
-                Test the casting platform for free
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </Link>
-              <p className="text-sm text-muted-foreground mt-3">
-                No credit card required
-              </p>
-            </div>
+          <div className="text-center">
+            <Link
+              href="#signup"
+              className="group inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-all text-lg"
+            >
+              Test the casting platform for free
+              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            </Link>
+            <p className="text-sm text-muted-foreground mt-3">No credit card required</p>
           </div>
         </div>
 
-        {/* Carousel controls: dots and nav */}
-        <div className="flex items-center justify-center gap-4 mt-8">
-          {/* Dot indicators */}
-          <div
-            className="flex items-center justify-center gap-3"
-            role="tablist"
-            aria-label="Carousel slide indicators"
-          >
-            {CAROUSEL_IMAGES.map((img, i) => (
-              <button
-                key={i}
-                role="tab"
-                aria-selected={i === currentIndex}
-                aria-label={`Show slide ${i + 1}: ${img.alt}`}
-                onClick={() => goToSlide(i)}
-                disabled={isTransitioning}
-                className={`rounded-full transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary disabled:cursor-not-allowed ${
-                  i === currentIndex
-                    ? "bg-primary w-8 h-2"
-                    : "bg-white/30 hover:bg-white/55 w-2 h-2"
-                }`}
-              />
-            ))}
-          </div>
+        {/* Dot indicators */}
+        <div
+          className="flex items-center justify-center gap-3 mt-8"
+          role="tablist"
+          aria-label="Carousel slide indicators"
+        >
+          {CAROUSEL_IMAGES.map((img, i) => (
+            <button
+              key={i}
+              role="tab"
+              aria-selected={i === active}
+              aria-label={`Show slide ${i + 1}: ${img.alt}`}
+              onClick={() => transitionTo(i)}
+              className={`rounded-full transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary ${
+                i === active
+                  ? "bg-primary w-8 h-2"
+                  : "bg-white/40 hover:bg-white/65 w-2 h-2"
+              }`}
+            />
+          ))}
         </div>
 
         {/* FAQ teaser */}
         <p className="text-center text-muted-foreground mt-8">
           Have questions?{" "}
-          <Link
-            href="mailto:contact@gogreenlight.ai"
-            className="text-primary hover:underline"
-          >
+          <Link href="mailto:contact@gogreenlight.ai" className="text-primary hover:underline">
             Contact us
           </Link>
         </p>

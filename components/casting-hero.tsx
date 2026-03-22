@@ -22,9 +22,9 @@ export function CastingHero() {
           <source src={VIDEO_URL} type="video/mp4" />
         </video>
 
-        {/* Semi-transparent black gradient overlay — lighter for more video visibility */}
+        {/* Semi-transparent black gradient overlay — increased opacity for readability */}
         <div
-          className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/50 to-black/60"
+          className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/75 to-black/85"
           aria-hidden="true"
         />
 
