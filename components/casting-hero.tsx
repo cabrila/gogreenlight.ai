@@ -2,7 +2,7 @@
 
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const CAROUSEL_IMAGES = [
   {
@@ -19,72 +19,88 @@ const CAROUSEL_IMAGES = [
   },
 ];
 
-const TRANSITION_DURATION = 1000; // ms for cross-fade
-const SLIDE_INTERVAL = 5000; // ms between auto-advances
+// Duration of the cross-fade blend in ms
+const TRANSITION_DURATION = 1400;
+// Time each slide is fully visible before the next begins
+const SLIDE_INTERVAL = 5500;
 
 export function CastingHero() {
   const [current, setCurrent] = useState(0);
   const [next, setNext] = useState<number | null>(null);
-  const [fading, setFading] = useState(false);
+  const [transitioning, setTransitioning] = useState(false);
+  // Tracks whether the outgoing slide's Ken-Burns zoom has started
+  const [zooming, setZooming] = useState(false);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const advance = (nextIndex: number) => {
+    if (transitioning) return;
+    setNext(nextIndex);
+    setTransitioning(true);
+    setZooming(true);
+
+    timerRef.current = setTimeout(() => {
+      setCurrent(nextIndex);
+      setNext(null);
+      setTransitioning(false);
+      setZooming(false);
+    }, TRANSITION_DURATION);
+  };
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      const nextIndex = (current + 1) % CAROUSEL_IMAGES.length;
-      setNext(nextIndex);
-      setFading(true);
-      setTimeout(() => {
-        setCurrent(nextIndex);
-        setNext(null);
-        setFading(false);
-      }, TRANSITION_DURATION);
+    const interval = setInterval(() => {
+      advance((current + 1) % CAROUSEL_IMAGES.length);
     }, SLIDE_INTERVAL);
 
-    return () => clearInterval(timer);
-  }, [current]);
+    return () => {
+      clearInterval(interval);
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [current, transitioning]);
 
   const goTo = (index: number) => {
-    if (fading || index === current) return;
-    setNext(index);
-    setFading(true);
-    setTimeout(() => {
-      setCurrent(index);
-      setNext(null);
-      setFading(false);
-    }, TRANSITION_DURATION);
+    if (index === current) return;
+    advance(index);
   };
 
   return (
     <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden pt-20">
       {/* ── Carousel background ── */}
       <div className="absolute inset-0">
-        {/* Current slide */}
+        {/* Current (outgoing) slide — fades out with a subtle Ken Burns zoom */}
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
             backgroundImage: `url('${CAROUSEL_IMAGES[current].src}')`,
-            opacity: fading ? 0 : 1,
-            transition: fading
-              ? `opacity ${TRANSITION_DURATION}ms ease-in-out`
-              : "none",
+            opacity: transitioning ? 0 : 1,
+            transform: zooming ? "scale(1.06)" : "scale(1)",
+            transition: transitioning
+              ? `opacity ${TRANSITION_DURATION}ms cubic-bezier(0.4, 0, 0.2, 1),
+                 transform ${TRANSITION_DURATION}ms cubic-bezier(0.4, 0, 0.2, 1)`
+              : "transform 6000ms linear",
+            willChange: "opacity, transform",
           }}
           aria-hidden="true"
         />
 
-        {/* Next slide — cross-fades in */}
+        {/* Incoming slide — fades in with a slight zoom-out settle */}
         {next !== null && (
           <div
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{
               backgroundImage: `url('${CAROUSEL_IMAGES[next].src}')`,
-              opacity: fading ? 1 : 0,
-              transition: `opacity ${TRANSITION_DURATION}ms ease-in-out`,
+              opacity: transitioning ? 1 : 0,
+              transform: transitioning ? "scale(1)" : "scale(1.06)",
+              transition: `opacity ${TRANSITION_DURATION}ms cubic-bezier(0.4, 0, 0.2, 1),
+                           transform ${TRANSITION_DURATION}ms cubic-bezier(0.4, 0, 0.2, 1)`,
+              willChange: "opacity, transform",
             }}
             aria-hidden="true"
           />
         )}
 
-        {/* Semi-transparent black middleground overlay */}
-        <div className="absolute inset-0 bg-black/65" aria-hidden="true" />
+        {/* Semi-transparent black middleground overlay — increased for readability */}
+        <div className="absolute inset-0 bg-black/80" aria-hidden="true" />
 
         {/* Gradient fade to site background at bottom */}
         <div
