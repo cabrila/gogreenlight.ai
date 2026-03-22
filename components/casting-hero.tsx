@@ -8,7 +8,7 @@ const VIDEO_URL =
 
 export function CastingHero() {
   return (
-    <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden pt-20">
+    <section className="relative flex items-center justify-center overflow-hidden pt-32 pb-24 sm:pt-36 sm:pb-28 lg:pt-40 lg:pb-32">
       {/* ── Video background ── */}
       <div className="absolute inset-0">
         <video
