@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { Check, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 
@@ -85,16 +85,6 @@ export function CastingPricing() {
     };
   }, [transitionTo]);
 
-  const goPrev = () => {
-    const target = (activeRef.current - 1 + CAROUSEL_IMAGES.length) % CAROUSEL_IMAGES.length;
-    transitionTo(target);
-  };
-
-  const goNext = () => {
-    const target = (activeRef.current + 1) % CAROUSEL_IMAGES.length;
-    transitionTo(target);
-  };
-
   return (
     <section id="pricing" className="relative py-24 lg:py-32 overflow-hidden">
 
@@ -156,22 +146,6 @@ export function CastingPricing() {
           }}
         />
       </div>
-
-      {/* ── Previous / Next navigation arrows ── */}
-      <button
-        onClick={goPrev}
-        className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full bg-black/50 hover:bg-black/70 text-white transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
-        aria-label="Previous slide"
-      >
-        <ChevronLeft className="w-6 h-6" />
-      </button>
-      <button
-        onClick={goNext}
-        className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full bg-black/50 hover:bg-black/70 text-white transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
-        aria-label="Next slide"
-      >
-        <ChevronRight className="w-6 h-6" />
-      </button>
 
       {/* ── Content ── */}
       <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8" style={{ zIndex: 10 }}>
