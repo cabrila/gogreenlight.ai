@@ -126,7 +126,7 @@ export function CastingCTA() {
                       : "bg-primary/50 text-primary-foreground/50 cursor-not-allowed"
                   }`}
                 >
-                  SUBMIT REQUEST TO TEST FOR FREE
+                  Submit request to test for free
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </button>
               </form>
