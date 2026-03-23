@@ -217,28 +217,6 @@ export function CastingPricing() {
           </div>
         </div>
 
-        {/* Dot indicators */}
-        <div
-          className="flex items-center justify-center gap-3 mt-8"
-          role="tablist"
-          aria-label="Carousel slide indicators"
-        >
-          {CAROUSEL_IMAGES.map((img, i) => (
-            <button
-              key={i}
-              role="tab"
-              aria-selected={i === active}
-              aria-label={`Show slide ${i + 1}: ${img.alt}`}
-              onClick={() => transitionTo(i)}
-              className={`rounded-full transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary ${
-                i === active
-                  ? "bg-primary w-8 h-2"
-                  : "bg-white/40 hover:bg-white/65 w-2 h-2"
-              }`}
-            />
-          ))}
-        </div>
-
         {/* FAQ teaser */}
         <p className="text-center text-muted-foreground mt-8">
           Have questions?{" "}
