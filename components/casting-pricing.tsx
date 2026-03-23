@@ -1,5 +1,27 @@
+"use client";
+
 import { Check, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { useCallback, useEffect, useRef, useState } from "react";
+
+// actors.png is first in the sequence
+const CAROUSEL_IMAGES = [
+  {
+    src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/actors-G3VdSkPQEkEVVcE8bIaqg0Jrdttkwc.png",
+    alt: "Actor long-list with candidate cards and voting",
+  },
+  {
+    src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/characters-TNZnGN8bhyHlcpuVW1QWAfJAx9wFtK.png",
+    alt: "Characters management grid with actor collages",
+  },
+  {
+    src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/actorscreen-DDQmgm6UaNf3bX6VW7xptdantBV360.png",
+    alt: "Actor detail panel with media library and team votes",
+  },
+];
+
+const FADE_DURATION = 900;  // ms — cross-fade between slides
+const DISPLAY_TIME  = 5000; // ms — how long each slide is fully visible
 
 const includedFeatures = [
   "Unlimited projects",
@@ -11,52 +33,161 @@ const includedFeatures = [
 ];
 
 export function CastingPricing() {
+  // `active` = the visible slide index; `prev` = the slide fading out
+  const [active, setActive] = useState(0);
+  const [prev, setPrev] = useState<number | null>(null);
+  const [transitioning, setTransitioning] = useState(false);
+
+  const activeRef = useRef(0);
+  const transitioningRef = useRef(false);
+  const finishRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  // Kick off a cross-fade to `target`
+  const transitionTo = useCallback((target: number) => {
+    if (transitioningRef.current || target === activeRef.current) return;
+
+    const from = activeRef.current;
+    transitioningRef.current = true;
+    activeRef.current = target;
+
+    // 1. Mount both slides — outgoing at full opacity, incoming at 0
+    setPrev(from);
+    setActive(target);
+    setTransitioning(false); // incoming opacity = 0
+
+    // 2. After one paint, flip transitioning → true so CSS kicks in
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        setTransitioning(true); // incoming fades to 1, outgoing fades to 0
+      });
+    });
+
+    // 3. Clean up after fade completes
+    if (finishRef.current) clearTimeout(finishRef.current);
+    finishRef.current = setTimeout(() => {
+      setPrev(null);
+      setTransitioning(false);
+      transitioningRef.current = false;
+    }, FADE_DURATION + 50);
+  }, []);
+
+  // Auto-advance
+  useEffect(() => {
+    intervalRef.current = setInterval(() => {
+      const next = (activeRef.current + 1) % CAROUSEL_IMAGES.length;
+      transitionTo(next);
+    }, DISPLAY_TIME);
+
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+      if (finishRef.current) clearTimeout(finishRef.current);
+    };
+  }, [transitionTo]);
+
   return (
-    <section id="pricing" className="relative py-24 lg:py-32 bg-card/30">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="pricing" className="relative py-24 lg:py-32 overflow-hidden">
+
+      {/* ── Carousel background ── */}
+      <div className="absolute inset-0" aria-hidden="true">
+        {/*
+          Layering strategy:
+          - `prev` slide: z-index 1, fades from opacity-1 → opacity-0 during transition
+          - `active` slide: z-index 2, fades from opacity-0 → opacity-1 during transition
+          - When no transition: only `active` is rendered at opacity-1
+        */}
+
+        {/* Outgoing slide */}
+        {prev !== null && (
+          <div
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{
+              backgroundImage: `url('${CAROUSEL_IMAGES[prev].src}')`,
+              opacity: transitioning ? 0 : 1,
+              zIndex: 1,
+              transition: `opacity ${FADE_DURATION}ms cubic-bezier(0.4, 0, 0.2, 1)`,
+              willChange: "opacity",
+            }}
+          />
+        )}
+
+        {/* Active (incoming) slide */}
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: `url('${CAROUSEL_IMAGES[active].src}')`,
+            opacity: prev !== null ? (transitioning ? 1 : 0) : 1,
+            zIndex: 2,
+            transition: prev !== null
+              ? `opacity ${FADE_DURATION}ms cubic-bezier(0.4, 0, 0.2, 1)`
+              : "none",
+            willChange: "opacity",
+          }}
+        />
+
+        {/* Overlay — 90% opaque (10% transparent) */}
+        <div className="absolute inset-0 bg-black/90" style={{ zIndex: 3 }} />
+
+        {/* Top fade from previous section */}
+        <div
+          className="absolute inset-x-0 top-0 h-32 pointer-events-none"
+          style={{
+            background: "linear-gradient(to top, transparent, hsl(0 0% 4%))",
+            zIndex: 4,
+          }}
+        />
+
+        {/* Bottom fade to next section */}
+        <div
+          className="absolute inset-x-0 bottom-0 h-32 pointer-events-none"
+          style={{
+            background: "linear-gradient(to bottom, transparent, hsl(0 0% 4%))",
+            zIndex: 4,
+          }}
+        />
+      </div>
+
+      {/* ── Content ── */}
+      <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8" style={{ zIndex: 10 }}>
+
         {/* Header */}
         <div className="text-center mb-16">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-6">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-6 text-balance">
             Test GoGreenlight's Casting Platform
           </h2>
         </div>
 
         {/* Pricing card */}
-        <div className="relative rounded-3xl border border-primary/30 bg-card p-8 lg:p-12 glow">
-          {/* Features */}
-          <div>
-            <p className="text-sm font-medium text-muted-foreground uppercase tracking-wider mb-6">
-              Everything included
-            </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {includedFeatures.map((feature, index) => (
-                <div key={index} className="flex items-center gap-3">
-                  <div className="flex-shrink-0 w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center">
-                    <Check className="w-3 h-3 text-primary" />
-                  </div>
-                  <span className="text-foreground">{feature}</span>
+        <div className="rounded-3xl border border-primary/30 bg-card/90 backdrop-blur-sm p-8 lg:p-12 glow">
+
+          {/* Features grid */}
+          <p className="text-sm font-medium text-muted-foreground uppercase tracking-wider mb-6">
+            Everything included
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+            {includedFeatures.map((feature) => (
+              <div key={feature} className="flex items-center gap-3">
+                <div className="flex-shrink-0 w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center">
+                  <Check className="w-3 h-3 text-primary" />
                 </div>
-              ))}
-            </div>
+                <span className="text-foreground">{feature}</span>
+              </div>
+            ))}
           </div>
 
           {/* Divider */}
-          <div className="border-t border-border my-8" />
+          <div className="border-t border-border mb-8" />
 
           {/* CTA */}
-          <div className="flex justify-center">
-            <div className="text-center">
-              <Link
-                href="#signup"
-                className="group inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-all text-lg"
-              >
-                Test the casting platform for free
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </Link>
-              <p className="text-sm text-muted-foreground mt-3">
-                No credit card required
-              </p>
-            </div>
+          <div className="text-center">
+            <Link
+              href="#signup"
+              className="group inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-all text-lg"
+            >
+              Test the casting platform for free
+              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            </Link>
+            <p className="text-sm text-muted-foreground mt-3">No credit card required</p>
           </div>
         </div>
 

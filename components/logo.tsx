@@ -10,8 +10,8 @@ interface LogoProps {
 export function Logo({ className = "", size = "md" }: LogoProps) {
   const sizeClasses = {
     sm: { width: 120, height: 24 },
-    md: { width: 160, height: 32 },
-    lg: { width: 200, height: 40 },
+    md: { width: 200, height: 40 },
+    lg: { width: 250, height: 50 },
     xl: { width: 600, height: 120 },
   };
 
