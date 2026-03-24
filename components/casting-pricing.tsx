@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { Check, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 
@@ -85,16 +85,6 @@ export function CastingPricing() {
     };
   }, [transitionTo]);
 
-  const goPrev = () => {
-    const target = (activeRef.current - 1 + CAROUSEL_IMAGES.length) % CAROUSEL_IMAGES.length;
-    transitionTo(target);
-  };
-
-  const goNext = () => {
-    const target = (activeRef.current + 1) % CAROUSEL_IMAGES.length;
-    transitionTo(target);
-  };
-
   return (
     <section id="pricing" className="relative py-24 lg:py-32 overflow-hidden">
 
@@ -157,22 +147,6 @@ export function CastingPricing() {
         />
       </div>
 
-      {/* ── Previous / Next navigation arrows ── */}
-      <button
-        onClick={goPrev}
-        className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full bg-black/50 hover:bg-black/70 text-white transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
-        aria-label="Previous slide"
-      >
-        <ChevronLeft className="w-6 h-6" />
-      </button>
-      <button
-        onClick={goNext}
-        className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full bg-black/50 hover:bg-black/70 text-white transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
-        aria-label="Next slide"
-      >
-        <ChevronRight className="w-6 h-6" />
-      </button>
-
       {/* ── Content ── */}
       <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8" style={{ zIndex: 10 }}>
 
@@ -215,28 +189,6 @@ export function CastingPricing() {
             </Link>
             <p className="text-sm text-muted-foreground mt-3">No credit card required</p>
           </div>
-        </div>
-
-        {/* Dot indicators */}
-        <div
-          className="flex items-center justify-center gap-3 mt-8"
-          role="tablist"
-          aria-label="Carousel slide indicators"
-        >
-          {CAROUSEL_IMAGES.map((img, i) => (
-            <button
-              key={i}
-              role="tab"
-              aria-selected={i === active}
-              aria-label={`Show slide ${i + 1}: ${img.alt}`}
-              onClick={() => transitionTo(i)}
-              className={`rounded-full transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary ${
-                i === active
-                  ? "bg-primary w-8 h-2"
-                  : "bg-white/40 hover:bg-white/65 w-2 h-2"
-              }`}
-            />
-          ))}
         </div>
 
         {/* FAQ teaser */}
