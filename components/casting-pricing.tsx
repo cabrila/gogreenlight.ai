@@ -4,19 +4,19 @@ import { Check, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-// actors.png is first in the sequence
+// AI-generated images (no real celebrities)
 const CAROUSEL_IMAGES = [
   {
-    src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/actors-G3VdSkPQEkEVVcE8bIaqg0Jrdttkwc.png",
-    alt: "Actor long-list with candidate cards and voting",
+    src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-MZuy3JnQk6ageZ8980Dj88JfYCpJ3x.png",
+    alt: "Characters management grid with AI-generated actor headshots",
   },
   {
-    src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/characters-TNZnGN8bhyHlcpuVW1QWAfJAx9wFtK.png",
-    alt: "Characters management grid with actor collages",
+    src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-pxtvYC1Hk6BUQGzON31xqGPJrKHJv8.png",
+    alt: "Actor database with AI-generated candidate cards",
   },
   {
-    src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/actorscreen-DDQmgm6UaNf3bX6VW7xptdantBV360.png",
-    alt: "Actor detail panel with media library and team votes",
+    src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-0orIt2Gm3hXPskgrA8Y15aqn1Ooz2P.png",
+    alt: "Actor detail view with AI-generated profile and media player",
   },
 ];
 
