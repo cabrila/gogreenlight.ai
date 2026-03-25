@@ -7,7 +7,6 @@ import { Logo } from "./logo";
 
 const navLinks: { href: string; label: string }[] = [
   { href: "#features", label: "Features" },
-  { href: "#pricing", label: "Get free Beta" },
 ];
 
 export function Header() {
