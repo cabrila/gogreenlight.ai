@@ -24,7 +24,7 @@ const features = [
     icon: Shield,
     title: "Security, Compliancy & GDPR",
     description:
-      "Built on MovieLabs OMC standard and GDPR compliant by design. Enterprise-grade security with EU data hosting. Talent consent management, data retention policies, and audit trails built in.",
+      "GDPR compliant by design. Enterprise-grade security with EU data hosting. Talent consent management, data retention policies, and audit trails built in.",
   },
 ];
 
