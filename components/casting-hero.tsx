@@ -83,7 +83,7 @@ export function CastingHero() {
             >
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
-            <span>Built for Creators</span>
+            <span>Built for creatives by creatives</span>
           </div>
           <div className="flex items-center gap-2">
             <svg
