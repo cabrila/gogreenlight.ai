@@ -12,7 +12,7 @@ const features = [
     title: "Powerful Collaboration",
     description:
       '"Clarity of intent is everything. Once everyone understands what you\'re trying to do, the collaboration becomes powerful."',
-    author: "Christopher Nolan (Director)",
+    author: "Attributed to Christopher Nolan, Director",
   },
   {
     icon: Share2,
@@ -51,8 +51,8 @@ export function CastingFeatures() {
                     {feature.description}
                   </p>
                   {feature.author && (
-                    <p className="text-sm text-muted-foreground mt-2 italic">
-                      - {feature.author}
+                    <p className="text-xs text-muted-foreground/70 mt-3">
+                      {feature.author}
                     </p>
                   )}
                 </div>
