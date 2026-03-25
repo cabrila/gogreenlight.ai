@@ -16,7 +16,7 @@ export function AboutSection() {
           </p>
 
           <p>
-            At its core, GoGreenlight is both a vision and a platform—designed
+            At its core, GoGreenlight is both a vision and a platform - designed
             to reduce friction, cut through clutter, and connect teams around a
             shared creative direction. It replaces fragmented workflows and
             siloed tools with an intuitive, clear, unified platform that
