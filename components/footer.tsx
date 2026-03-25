@@ -29,14 +29,6 @@ export function Footer() {
                     Features
                   </Link>
                 </li>
-                <li>
-                  <Link
-                    href="#pricing"
-                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    Get free Beta
-                  </Link>
-                </li>
               </ul>
             </div>
             <div>
