@@ -8,7 +8,7 @@ const VIDEO_URL =
 
 export function CastingHero() {
   return (
-    <section className="relative flex items-center justify-center overflow-hidden pt-32 pb-10 sm:pt-36 sm:pb-12 lg:pt-40 lg:pb-14">
+    <section className="relative flex items-center justify-center overflow-hidden pt-24 pb-10 sm:pt-28 sm:pb-12 lg:pt-32 lg:pb-14">
       {/* ── Video background ── */}
       <div className="absolute inset-0">
         <video
@@ -40,11 +40,6 @@ export function CastingHero() {
 
       {/* ── Content ── */}
       <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        {/* Tagline */}
-        <p className="text-2xl sm:text-3xl text-primary mb-8 font-medium">
-          For creators by creators
-        </p>
-
         {/* Headline */}
         <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6 text-balance">
           <span className="text-foreground">From vision to screen</span>
