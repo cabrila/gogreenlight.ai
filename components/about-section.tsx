@@ -1,73 +1,45 @@
-import { Check } from "lucide-react";
-import Link from "next/link";
-
-const benefits = [
-  "Built for creatives by creatives",
-  "Built on MovieLabs OMC standard",
-  "GDPR compliant with EU hosting",
-  "Real-time team collaboration",
-  "Free beta access available now",
-];
-
-const PRODUCT_IMAGE =
-  "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-0orIt2Gm3hXPskgrA8Y15aqn1Ooz2P.png";
-
 export function AboutSection() {
   return (
     <section id="about" className="relative py-20 sm:py-24 lg:py-32 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section badge */}
-        <div className="flex justify-center mb-8">
-          <span className="inline-flex items-center px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium">
-            Why Choose Us
-          </span>
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section header */}
+        <div className="text-center mb-12">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+            About GoGreenlight
+          </h2>
+          <div className="w-20 h-1 bg-primary mx-auto rounded-full" />
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          {/* Left - Image */}
-          <div className="relative order-2 lg:order-1">
-            <div className="relative rounded-2xl overflow-hidden shadow-xl">
-              <img
-                src={PRODUCT_IMAGE}
-                alt="GoGreenlight actor detail view"
-                className="w-full h-auto"
-              />
-            </div>
-            {/* Decorative elements */}
-            <div className="absolute -bottom-4 -left-4 w-24 h-24 bg-primary/10 rounded-2xl -z-10" />
-            <div className="absolute -top-4 -right-4 w-32 h-32 bg-primary/5 rounded-2xl -z-10" />
-          </div>
+        {/* Content */}
+        <div className="space-y-6 text-lg text-gray-600 leading-relaxed">
+          <p>
+            GoGreenlight is where creative thinkers, computer scientists,
+            designers, and experienced film practitioners come together to
+            reimagine how film and television is produced. Rooted in real
+            production experience and powered by cutting-edge technology,
+            GoGreenlight brings fresh energy to an industry ready for change.
+          </p>
 
-          {/* Right - Content */}
-          <div className="order-1 lg:order-2">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
-              Built for Modern Teams
-            </h2>
-            <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-              Our platform is designed with your team&apos;s success in mind.
-              Powerful features meet intuitive design for the ultimate
-              creative workflow experience.
-            </p>
+          <p>
+            At its core, GoGreenlight is both a vision and a platform—designed
+            to reduce friction, cut through clutter, and connect teams around a
+            shared creative direction. It replaces fragmented workflows and
+            siloed tools with an intuitive, clear, unified platform that
+            supports the pace, complexity, and competition of modern production.
+          </p>
 
-            {/* Benefits list */}
-            <ul className="space-y-4 mb-8">
-              {benefits.map((benefit, index) => (
-                <li key={index} className="flex items-center gap-3">
-                  <div className="flex-shrink-0 w-5 h-5 rounded-full bg-primary flex items-center justify-center">
-                    <Check className="w-3 h-3 text-white" />
-                  </div>
-                  <span className="text-gray-700">{benefit}</span>
-                </li>
-              ))}
-            </ul>
+          <p>
+            Looking ahead, the ambition is bold: from casting to locations,
+            props, costumes, and beyond, GoGreenlight will integrate the entire
+            production machine into a cohesive, intelligent, and open ecosystem.
+            This isn&apos;t a passing trend—it&apos;s a long-term shift toward a more
+            connected, collaborative, and creatively empowered future.
+          </p>
 
-            <Link
-              href="#signup"
-              className="inline-flex items-center px-6 py-3 rounded-lg bg-primary text-white font-semibold hover:bg-primary/90 transition-all"
-            >
-              Get Started Today
-            </Link>
-          </div>
+          {/* Tagline */}
+          <p className="text-2xl sm:text-3xl font-bold text-primary text-center pt-6">
+            GoGreenlight - Unleashing Creativity.
+          </p>
         </div>
       </div>
     </section>
