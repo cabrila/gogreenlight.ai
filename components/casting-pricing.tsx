@@ -1,203 +1,67 @@
-"use client";
+import { Star } from "lucide-react";
 
-import { Check, ArrowRight } from "lucide-react";
-import Link from "next/link";
-import { useCallback, useEffect, useRef, useState } from "react";
-
-// AI-generated images (no real celebrities)
-const CAROUSEL_IMAGES = [
+const testimonials = [
   {
-    src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-MZuy3JnQk6ageZ8980Dj88JfYCpJ3x.png",
-    alt: "Characters management grid with AI-generated actor headshots",
+    quote:
+      "Clarity of intent is everything. Once everyone understands what you're trying to do, the collaboration becomes powerful.",
+    attribution: "Attributed to Christopher Nolan, Director",
+    stars: 5,
   },
   {
-    src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-pxtvYC1Hk6BUQGzON31xqGPJrKHJv8.png",
-    alt: "Actor database with AI-generated candidate cards",
+    quote:
+      "Finally a tool that understands the creative workflow. This is exactly what the industry has been waiting for.",
+    attribution: "Film Industry Professional",
+    stars: 5,
   },
   {
-    src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-0orIt2Gm3hXPskgrA8Y15aqn1Ooz2P.png",
-    alt: "Actor detail view with AI-generated profile and media player",
+    quote:
+      "The clarity this brings to casting decisions is remarkable. No more chaos, just creative focus.",
+    attribution: "Television Producer",
+    stars: 5,
   },
-];
-
-const FADE_DURATION = 900;  // ms — cross-fade between slides
-const DISPLAY_TIME  = 5000; // ms — how long each slide is fully visible
-
-const includedFeatures = [
-  "Unlimited projects",
-  "Real-time team collaboration",
-  "Talent organization & tags",
-  "MovieLabs OMC alignment",
-  "Priority support",
-  "Full feature access",
 ];
 
 export function CastingPricing() {
-  // `active` = the visible slide index; `prev` = the slide fading out
-  const [active, setActive] = useState(0);
-  const [prev, setPrev] = useState<number | null>(null);
-  const [transitioning, setTransitioning] = useState(false);
-
-  const activeRef = useRef(0);
-  const transitioningRef = useRef(false);
-  const finishRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
-
-  // Kick off a cross-fade to `target`
-  const transitionTo = useCallback((target: number) => {
-    if (transitioningRef.current || target === activeRef.current) return;
-
-    const from = activeRef.current;
-    transitioningRef.current = true;
-    activeRef.current = target;
-
-    // 1. Mount both slides — outgoing at full opacity, incoming at 0
-    setPrev(from);
-    setActive(target);
-    setTransitioning(false); // incoming opacity = 0
-
-    // 2. After one paint, flip transitioning → true so CSS kicks in
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        setTransitioning(true); // incoming fades to 1, outgoing fades to 0
-      });
-    });
-
-    // 3. Clean up after fade completes
-    if (finishRef.current) clearTimeout(finishRef.current);
-    finishRef.current = setTimeout(() => {
-      setPrev(null);
-      setTransitioning(false);
-      transitioningRef.current = false;
-    }, FADE_DURATION + 50);
-  }, []);
-
-  // Auto-advance
-  useEffect(() => {
-    intervalRef.current = setInterval(() => {
-      const next = (activeRef.current + 1) % CAROUSEL_IMAGES.length;
-      transitionTo(next);
-    }, DISPLAY_TIME);
-
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
-      if (finishRef.current) clearTimeout(finishRef.current);
-    };
-  }, [transitionTo]);
-
   return (
-    <section id="pricing" className="relative py-24 lg:py-32 overflow-hidden">
-
-      {/* ── Carousel background ── */}
-      <div className="absolute inset-0" aria-hidden="true">
-        {/*
-          Layering strategy:
-          - `prev` slide: z-index 1, fades from opacity-1 → opacity-0 during transition
-          - `active` slide: z-index 2, fades from opacity-0 → opacity-1 during transition
-          - When no transition: only `active` is rendered at opacity-1
-        */}
-
-        {/* Outgoing slide */}
-        {prev !== null && (
-          <div
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-            style={{
-              backgroundImage: `url('${CAROUSEL_IMAGES[prev].src}')`,
-              opacity: transitioning ? 0 : 1,
-              zIndex: 1,
-              transition: `opacity ${FADE_DURATION}ms cubic-bezier(0.4, 0, 0.2, 1)`,
-              willChange: "opacity",
-            }}
-          />
-        )}
-
-        {/* Active (incoming) slide */}
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage: `url('${CAROUSEL_IMAGES[active].src}')`,
-            opacity: prev !== null ? (transitioning ? 1 : 0) : 1,
-            zIndex: 2,
-            transition: prev !== null
-              ? `opacity ${FADE_DURATION}ms cubic-bezier(0.4, 0, 0.2, 1)`
-              : "none",
-            willChange: "opacity",
-          }}
-        />
-
-        {/* Overlay — 90% opaque (10% transparent) */}
-        <div className="absolute inset-0 bg-black/90" style={{ zIndex: 3 }} />
-
-        {/* Top fade from previous section */}
-        <div
-          className="absolute inset-x-0 top-0 h-32 pointer-events-none"
-          style={{
-            background: "linear-gradient(to top, transparent, hsl(0 0% 4%))",
-            zIndex: 4,
-          }}
-        />
-
-        {/* Bottom fade to next section */}
-        <div
-          className="absolute inset-x-0 bottom-0 h-32 pointer-events-none"
-          style={{
-            background: "linear-gradient(to bottom, transparent, hsl(0 0% 4%))",
-            zIndex: 4,
-          }}
-        />
-      </div>
-
-      {/* ── Content ── */}
-      <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8" style={{ zIndex: 10 }}>
-
-        {/* Header */}
+    <section id="pricing" className="relative py-20 sm:py-24 lg:py-32 bg-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section header */}
         <div className="text-center mb-16">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-6 text-balance">
-            Test GoGreenlight's Casting Platform
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+            Loved by Creators
           </h2>
-        </div>
-
-        {/* Pricing card */}
-        <div className="rounded-3xl border border-primary/30 bg-card/90 backdrop-blur-sm p-8 lg:p-12 glow">
-
-          {/* Features grid */}
-          <p className="text-sm font-medium text-muted-foreground uppercase tracking-wider mb-6">
-            Everything included
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            See what industry professionals have to say about their experience
           </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-            {includedFeatures.map((feature) => (
-              <div key={feature} className="flex items-center gap-3">
-                <div className="flex-shrink-0 w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center">
-                  <Check className="w-3 h-3 text-primary" />
-                </div>
-                <span className="text-foreground">{feature}</span>
-              </div>
-            ))}
-          </div>
-
-          {/* Divider */}
-          <div className="border-t border-border mb-8" />
-
-          {/* CTA */}
-          <div className="text-center">
-            <Link
-              href="#signup"
-              className="group inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-all text-lg"
-            >
-              Test the casting platform for free
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </Link>
-            <p className="text-sm text-muted-foreground mt-3">No credit card required</p>
-          </div>
         </div>
 
-        {/* FAQ teaser */}
-        <p className="text-center text-muted-foreground mt-8">
-          Have questions?{" "}
-          <Link href="mailto:contact@gogreenlight.ai" className="text-primary hover:underline">
-            Contact us
-          </Link>
-        </p>
+        {/* Testimonials grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {testimonials.map((testimonial, index) => (
+            <div
+              key={index}
+              className="p-6 rounded-2xl bg-gray-50 hover:bg-gray-100 transition-all duration-300"
+            >
+              {/* Stars */}
+              <div className="flex gap-1 mb-4">
+                {Array.from({ length: testimonial.stars }).map((_, i) => (
+                  <Star
+                    key={i}
+                    className="w-5 h-5 fill-primary text-primary"
+                  />
+                ))}
+              </div>
+
+              {/* Quote */}
+              <p className="text-gray-700 mb-4 leading-relaxed italic">
+                &quot;{testimonial.quote}&quot;
+              </p>
+
+              {/* Attribution */}
+              <p className="text-sm text-gray-500">{testimonial.attribution}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );

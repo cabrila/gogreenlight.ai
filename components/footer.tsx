@@ -1,102 +1,88 @@
 import Link from "next/link";
 import { Logo } from "./logo";
+import { Linkedin, Twitter, Instagram, Github } from "lucide-react";
+
+const footerLinks = {
+  Product: [
+    { label: "Features", href: "#features" },
+    { label: "Pricing", href: "#pricing" },
+    { label: "About", href: "#about" },
+  ],
+  Company: [
+    { label: "About Us", href: "#about" },
+    { label: "Contact", href: "mailto:contact@gogreenlight.ai" },
+  ],
+  Support: [
+    { label: "Help Center", href: "mailto:contact@gogreenlight.ai" },
+    { label: "Contact Us", href: "mailto:contact@gogreenlight.ai" },
+    { label: "Terms of Service", href: "/terms" },
+    { label: "Privacy Policy", href: "/privacypolicy" },
+  ],
+};
+
+const socialLinks = [
+  { icon: Linkedin, href: "#", label: "LinkedIn" },
+  { icon: Twitter, href: "#", label: "Twitter" },
+  { icon: Instagram, href: "#", label: "Instagram" },
+  { icon: Github, href: "#", label: "GitHub" },
+];
 
 export function Footer() {
   return (
-    <footer className="relative border-t border-border bg-card/50">
+    <footer className="relative bg-[#0a0a0a] border-t border-gray-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
-          {/* Logo & Tagline */}
-          <div className="flex flex-col gap-4">
-            <Logo size="md" />
-            <p className="text-sm text-muted-foreground max-w-xs">
-              The tool for creators who refuse to let chaos stand between them and its realization.
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-8 lg:gap-12">
+          {/* Logo & Description */}
+          <div className="col-span-2">
+            <Logo size="sm" />
+            <p className="text-sm text-gray-400 mt-4 max-w-xs leading-relaxed">
+              Empowering creative teams with intuitive solutions for seamless workflows.
             </p>
+            {/* Social links */}
+            <div className="flex items-center gap-4 mt-6">
+              {socialLinks.map((social) => (
+                <Link
+                  key={social.label}
+                  href={social.href}
+                  className="text-gray-500 hover:text-white transition-colors"
+                  aria-label={social.label}
+                >
+                  <social.icon className="w-5 h-5" />
+                </Link>
+              ))}
+            </div>
           </div>
 
-          {/* Links */}
-          <div className="flex flex-wrap gap-8 lg:gap-16">
-            <div>
-              <h4 className="text-sm font-semibold text-foreground mb-3">
-                Product
-              </h4>
-              <ul className="space-y-2">
-                <li>
-                  <Link
-                    href="#features"
-                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    Features
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="#pricing"
-                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    Get free Beta
-                  </Link>
-                </li>
+          {/* Links columns */}
+          {Object.entries(footerLinks).map(([title, links]) => (
+            <div key={title}>
+              <h4 className="text-sm font-semibold text-white mb-4">{title}</h4>
+              <ul className="space-y-3">
+                {links.map((link) => (
+                  <li key={link.label}>
+                    <Link
+                      href={link.href}
+                      className="text-sm text-gray-400 hover:text-white transition-colors"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
-            <div>
-              <h4 className="text-sm font-semibold text-foreground mb-3">
-                Legal
-              </h4>
-              <ul className="space-y-2">
-                <li>
-                  <Link
-                    href="/legalstack"
-                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    Legal Stack
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/privacypolicy"
-                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    Privacy Policy
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/terms"
-                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    Terms
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="text-sm font-semibold text-foreground mb-3">
-                Support
-              </h4>
-              <ul className="space-y-2">
-                <li>
-                  <Link
-                    href="mailto:contact@gogreenlight.ai"
-                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    Contact Us
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </div>
+          ))}
         </div>
 
-        {/* Bottom Bar */}
-        <div className="mt-12 pt-8 border-t border-border flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <div className="text-sm text-muted-foreground">
-            <p>&copy; {new Date().getFullYear()} GoGreenlight. All rights reserved.</p>
-            <p className="mt-1">Nordtoft 30, 9000 Aalborg, Denmark · CVR: 45992705</p>
+        {/* Bottom bar */}
+        <div className="mt-12 pt-8 border-t border-gray-800">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <p className="text-sm text-gray-500">
+              &copy; {new Date().getFullYear()} GoGreenlight. All rights reserved.
+            </p>
+            <p className="text-sm text-gray-500">
+              Nordtoft 30, 9000 Aalborg, Denmark &middot; CVR: 45992705
+            </p>
           </div>
-          <p className="text-sm text-muted-foreground">
-            Made with love in Denmark
-          </p>
         </div>
       </div>
     </footer>
