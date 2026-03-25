@@ -67,7 +67,7 @@ export function CastingHero() {
         {/* Beta clarification */}
         <p className="text-sm text-muted-foreground mb-10 max-w-xl mx-auto">
           GoGreenlight starts with Casting. Next up: Our AI-native
-          infrastructure for full production integration—spanning locations,
+          infrastructure for full production integration. Spanning locations,
           props, costumes, and beyond.
         </p>
 
