@@ -49,9 +49,8 @@ export function CastingHero() {
 
         {/* Subheadline */}
         <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto mb-10 leading-relaxed text-pretty">
-          The creative tool for creators, directors, producers and casting
-          directors who refuse to let inefficiency and chaos stand between their
-          vision and its realisation.
+          A creative tool for film and television creators who refuse to let
+          chaos stand between their vision and its realisation.
         </p>
 
         {/* CTA button */}
