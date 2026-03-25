@@ -66,9 +66,9 @@ export function CastingHero() {
 
         {/* Beta clarification */}
         <p className="text-sm text-muted-foreground mb-10 max-w-xl mx-auto">
-          GoGreenlight launches with the casting platform. Coming up is our AI
-          native platform for departmental integration - including casting,
-          locations, props, and costumes.
+          GoGreenlight starts with Casting. Next up: Our AI-native
+          infrastructure for full production integration—spanning locations,
+          props, costumes, and beyond.
         </p>
 
         {/* Trust indicators */}

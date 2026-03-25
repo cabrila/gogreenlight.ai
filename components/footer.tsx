@@ -10,7 +10,7 @@ export function Footer() {
           <div className="flex flex-col gap-4">
             <Logo size="md" />
             <p className="text-sm text-muted-foreground max-w-xs">
-              The tool for creators who refuse to let chaos stand between them and its realization.
+              The tool for creators who refuse to let chaos stand between them and their vision.
             </p>
           </div>
 
