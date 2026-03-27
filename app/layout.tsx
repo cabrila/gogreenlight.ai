@@ -15,9 +15,9 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "GoGreenlight | Unleash creativity, exponentially.",
+  title: "GoGreenlight | AI Infrastructure for Creative Production",
   description:
-    "Building the AI-native infrastructure for the future of creation. The deterministic Code-to-AI engine for the media industry.",
+    "Curating the world's creative assets before the Singularity arrives. Join the beta and build the future of film and media creation.",
   keywords: [
     "AI infrastructure",
     "creative assets",
@@ -27,9 +27,9 @@ export const metadata: Metadata = {
     "Code-to-AI",
   ],
   openGraph: {
-    title: "GoGreenlight | Unleash creativity, exponentially.",
+    title: "GoGreenlight | AI Infrastructure for Creative Production",
     description:
-      "Building the AI-native infrastructure for the future of creation. The deterministic Code-to-AI engine for the media industry.",
+      "Curating the world's creative assets before the Singularity arrives. Join the beta and build the future of film and media creation.",
     type: "website",
   },
 };
