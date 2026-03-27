@@ -7,7 +7,7 @@ import { Logo } from "./logo";
 
 const navLinks: { href: string; label: string }[] = [
   { href: "#features", label: "Features" },
-  { href: "#pricing", label: "Get free Beta" },
+  { href: "#about", label: "About" },
 ];
 
 export function Header() {
@@ -37,19 +37,16 @@ export function Header() {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-3">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                className="px-5 py-2.5 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
               >
                 {link.label}
               </Link>
             ))}
-          </nav>
-
-          <div className="hidden md:flex items-center">
             <Link
               href="#signup"
               className="px-5 py-2.5 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
@@ -72,12 +69,12 @@ export function Header() {
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
         <div className="md:hidden bg-background/95 backdrop-blur-lg border-b border-border">
-          <nav className="flex flex-col px-4 py-4 gap-4">
+          <nav className="flex flex-col px-4 py-4 gap-3">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-base text-muted-foreground hover:text-foreground transition-colors py-2"
+                className="px-5 py-2.5 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors text-center"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 {link.label}
@@ -85,7 +82,7 @@ export function Header() {
             ))}
             <Link
               href="#signup"
-              className="px-5 py-2.5 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors text-center mt-2"
+              className="px-5 py-2.5 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors text-center"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Test the casting platform for free

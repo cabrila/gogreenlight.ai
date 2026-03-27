@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Logo } from "./logo";
 
 export function Footer() {
@@ -8,9 +9,18 @@ export function Footer() {
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
           {/* Logo & Tagline */}
           <div className="flex flex-col gap-4">
-            <Logo size="md" />
+            <div className="flex items-center gap-4">
+              <Logo size="md" />
+              <Image
+                src="/images/movielabs-industry-forum-logo.png"
+                alt="MovieLabs Industry Forum Member"
+                width={32}
+                height={32}
+                className="h-8 w-auto opacity-70"
+              />
+            </div>
             <p className="text-sm text-muted-foreground max-w-xs">
-              The tool for creators who refuse to let chaos stand between them and its realization.
+              The tool for creators who refuse to let chaos stand between them and their vision.
             </p>
           </div>
 
@@ -27,14 +37,6 @@ export function Footer() {
                     className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                   >
                     Features
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="#pricing"
-                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    Get free Beta
                   </Link>
                 </li>
               </ul>

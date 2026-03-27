@@ -8,7 +8,7 @@ const VIDEO_URL =
 
 export function CastingHero() {
   return (
-    <section className="relative flex items-center justify-center overflow-hidden pt-32 pb-10 sm:pt-36 sm:pb-12 lg:pt-40 lg:pb-14">
+    <section className="relative flex items-center justify-center overflow-hidden pt-24 pb-10 sm:pt-28 sm:pb-12 lg:pt-32 lg:pb-14">
       {/* ── Video background ── */}
       <div className="absolute inset-0">
         <video
@@ -40,11 +40,6 @@ export function CastingHero() {
 
       {/* ── Content ── */}
       <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        {/* Tagline */}
-        <p className="text-2xl sm:text-3xl text-primary mb-8 font-medium">
-          For creators by creators
-        </p>
-
         {/* Headline */}
         <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6 text-balance">
           <span className="text-foreground">From vision to screen</span>
@@ -54,9 +49,8 @@ export function CastingHero() {
 
         {/* Subheadline */}
         <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto mb-10 leading-relaxed text-pretty">
-          The creative tool for creators, directors, producers and casting
-          directors who refuse to let inefficiency and chaos stand between their
-          vision and its realisation.
+          A creative tool for film and television creators who refuse to let
+          chaos stand between their vision and its realisation.
         </p>
 
         {/* CTA button */}
@@ -72,9 +66,9 @@ export function CastingHero() {
 
         {/* Beta clarification */}
         <p className="text-sm text-muted-foreground mb-10 max-w-xl mx-auto">
-          GoGreenlight launches with the casting platform. The prototype shows
-          our full AI native vision for departmental integration - including
-          locations, props and costume.
+          GoGreenlight starts with Casting. Next up: Our AI-native
+          infrastructure for full production integration. Spanning locations,
+          props, costumes, and beyond.
         </p>
 
         {/* Trust indicators */}
@@ -89,7 +83,7 @@ export function CastingHero() {
             >
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
-            <span>Built for Creators</span>
+            <span>Built for creatives by creatives</span>
           </div>
           <div className="flex items-center gap-2">
             <svg
@@ -101,7 +95,7 @@ export function CastingHero() {
             >
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
-            <span>MovieLabs OMC Compatible</span>
+            <span>Built on MovieLabs OMC standard</span>
           </div>
           <div className="flex items-center gap-2">
             <svg

@@ -47,7 +47,7 @@ export function CastingCTA() {
           
           <div className="relative z-10">
             <div className="text-center mb-6">
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-4">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-4 text-balance max-w-2xl mx-auto">
                 Ready for One Clear Picture on One Clear Platform?
               </h2>
               <p className="text-base text-muted-foreground max-w-xl mx-auto">
