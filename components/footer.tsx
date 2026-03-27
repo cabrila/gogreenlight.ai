@@ -11,13 +11,20 @@ export function Footer() {
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-4">
               <Logo size="md" />
-              <Image
-                src="/images/movielabs-industry-forum-logo.png"
-                alt="MovieLabs Industry Forum Member"
-                width={32}
-                height={32}
-                className="h-8 w-auto opacity-70"
-              />
+              <a
+                href="https://movielabs.com/about-industry-forum/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="transition-opacity hover:opacity-100"
+              >
+                <Image
+                  src="/images/movielabs-industry-forum-logo.png"
+                  alt="MovieLabs Industry Forum Member"
+                  width={32}
+                  height={32}
+                  className="h-8 w-auto opacity-70"
+                />
+              </a>
             </div>
             <p className="text-sm text-muted-foreground max-w-xs">
               The tool for creators who refuse to let chaos stand between them and their vision.

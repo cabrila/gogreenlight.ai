@@ -8,13 +8,20 @@ export function TrustBanner() {
           <p className="text-sm text-muted-foreground">
             Proud members of the MovieLabs Industry Forum
           </p>
-          <Image
-            src="/images/movielabs-industry-forum-logo.png"
-            alt="MovieLabs Industry Forum Member"
-            width={48}
-            height={48}
-            className="h-10 w-auto"
-          />
+          <a
+            href="https://movielabs.com/about-industry-forum/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="transition-opacity hover:opacity-80"
+          >
+            <Image
+              src="/images/movielabs-industry-forum-logo.png"
+              alt="MovieLabs Industry Forum Member"
+              width={48}
+              height={48}
+              className="h-10 w-auto"
+            />
+          </a>
         </div>
       </div>
     </section>
