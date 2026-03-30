@@ -31,6 +31,14 @@ export const metadata: Metadata = {
     description:
       "Curating the world's creative assets before the Singularity arrives. Join the beta and build the future of film and media creation.",
     type: "website",
+    images: [
+      {
+        url: "/images/gogreenlight-logo.png",
+        width: 512,
+        height: 512,
+        alt: "GoGreenlight Logo",
+      },
+    ],
   },
 };
 
