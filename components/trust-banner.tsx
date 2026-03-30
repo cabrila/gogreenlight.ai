@@ -17,9 +17,9 @@ export function TrustBanner() {
             <Image
               src="/images/movielabs-industry-forum-logo.png"
               alt="MovieLabs Industry Forum Member"
-              width={48}
-              height={48}
-              className="h-10 w-auto"
+              width={96}
+              height={96}
+              className="h-20 w-auto"
             />
           </a>
         </div>
