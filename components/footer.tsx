@@ -20,9 +20,9 @@ export function Footer() {
                 <Image
                   src="/images/movielabs-industry-forum-logo.png"
                   alt="MovieLabs Industry Forum Member"
-                  width={32}
-                  height={32}
-                  className="h-8 w-auto opacity-70"
+                  width={64}
+                  height={64}
+                  className="h-16 w-auto opacity-70"
                 />
               </a>
             </div>
