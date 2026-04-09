@@ -2,6 +2,7 @@
 
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { events } from "@/lib/analytics";
 
 const VIDEO_URL =
   "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/0_Filmmaking_Video_Production_3840x2160-RpoCSMIOrZCwfTME6OoNL0kOiVmQCa.mov";
@@ -57,6 +58,7 @@ export function CastingHero() {
         <div className="flex items-center justify-center mb-10">
           <Link
             href="#signup"
+            onClick={() => events.testPlatformClick("hero")}
             className="group flex items-center gap-2 px-8 py-4 rounded-lg bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-all glow"
           >
             Test the casting platform for free

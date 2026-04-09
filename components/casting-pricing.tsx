@@ -3,6 +3,7 @@
 import { Check, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { events } from "@/lib/analytics";
 
 // AI-generated images (no real celebrities)
 const CAROUSEL_IMAGES = [
@@ -182,6 +183,7 @@ export function CastingPricing() {
           <div className="text-center">
             <Link
               href="#signup"
+              onClick={() => events.testPlatformClick("pricing")}
               className="group inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-all text-lg"
             >
               Test the casting platform for free
