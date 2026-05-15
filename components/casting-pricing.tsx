@@ -154,7 +154,7 @@ export function CastingPricing() {
         {/* Header */}
         <div className="text-center mb-16">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-6 text-balance">
-            Test GoGreenlight's Casting Platform
+            GoGreenlight's Casting Platform
           </h2>
         </div>
 
