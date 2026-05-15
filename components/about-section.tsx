@@ -27,7 +27,7 @@ export function AboutSection() {
             Looking ahead, the ambition is bold: from casting to locations,
             props, costume and beyond, GoGreenlight will integrate the entire
             production machine into a cohesive, intelligent, and open ecosystem.
-            This isn't a passing trend—it's a long-term shift toward a more
+            This isn't a passing trend, it's a long-term shift toward a more
             connected, collaborative, and creatively empowered future.
           </p>
 

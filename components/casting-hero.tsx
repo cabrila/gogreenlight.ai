@@ -1,7 +1,6 @@
 "use client";
 
 import { ArrowRight } from "lucide-react";
-import Link from "next/link";
 import { events } from "@/lib/analytics";
 
 const VIDEO_URL =
@@ -55,15 +54,20 @@ export function CastingHero() {
         </p>
 
         {/* CTA button */}
-        <div className="flex items-center justify-center mb-10">
-          <Link
-            href="#signup"
+        <div className="flex flex-col items-center justify-center mb-10">
+          <a
+            href="https://app.gogreenlight.ai"
+            target="_blank"
+            rel="noopener noreferrer"
             onClick={() => events.testPlatformClick("hero")}
             className="group flex items-center gap-2 px-8 py-4 rounded-lg bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-all glow"
           >
-            Test the casting platform for free
+            Go to the casting platform
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-          </Link>
+          </a>
+          <p className="text-sm text-muted-foreground mt-3">
+            No credit card needed - your feedback is welcome in this Beta.
+          </p>
         </div>
 
         {/* Beta clarification */}

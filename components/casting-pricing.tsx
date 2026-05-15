@@ -154,7 +154,7 @@ export function CastingPricing() {
         {/* Header */}
         <div className="text-center mb-16">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-6 text-balance">
-            Test GoGreenlight's Casting Platform
+            GoGreenlight's Casting Platform
           </h2>
         </div>
 
@@ -181,15 +181,19 @@ export function CastingPricing() {
 
           {/* CTA */}
           <div className="text-center">
-            <Link
-              href="#signup"
+            <a
+              href="https://app.gogreenlight.ai"
+              target="_blank"
+              rel="noopener noreferrer"
               onClick={() => events.testPlatformClick("pricing")}
               className="group inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-all text-lg"
             >
-              Test the casting platform for free
+              Go to the casting platform
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </Link>
-            <p className="text-sm text-muted-foreground mt-3">No credit card required</p>
+            </a>
+            <p className="text-sm text-muted-foreground mt-3">
+              No credit card needed - your feedback is welcome in this Beta.
+            </p>
           </div>
         </div>
 
