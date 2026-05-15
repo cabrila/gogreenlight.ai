@@ -54,8 +54,8 @@ export function CastingHero() {
           chaos stand between their vision and its realisation.
         </p>
 
-        {/* CTA buttons */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10">
+        {/* CTA button */}
+        <div className="flex items-center justify-center mb-10">
           <Link
             href="#signup"
             onClick={() => events.testPlatformClick("hero")}
@@ -64,15 +64,6 @@ export function CastingHero() {
             Test the casting platform for free
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Link>
-          <a
-            href="https://youtu.be/vICvBjc-Nws"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group flex items-center gap-2 px-8 py-4 rounded-lg bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-all"
-          >
-            Watch prototype vision video
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-          </a>
         </div>
 
         {/* Beta clarification */}
